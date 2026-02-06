@@ -53,5 +53,5 @@
       "~/features/users": ["./src/features/users/*"]
     }
   },
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "generated", "dist"]
 }
