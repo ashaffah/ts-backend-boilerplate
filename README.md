@@ -73,7 +73,6 @@ The project uses path aliases for better module resolution. Check the [tsconfig.
    "~/core/utils": ["./src/core/utils/*"],
    // Feature-specific Aliases
    "~/features/users": ["./src/features/users/*"],
-   "@/generated/prisma": ["./generated/prisma/client.ts"]
 }
 ```
 
