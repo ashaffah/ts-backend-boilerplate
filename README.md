@@ -81,9 +81,9 @@ The project uses path aliases for better module resolution. Check the [tsconfig.
 
 - `src/`: Contains the source code of the application.
   - `core/`: Core utilities, configurations, and constants.
-  - `config/`: Application configuration files.
-  - `constants/`: Application-wide constants.
-  - `utils/`: Utility functions and helpers.
+    - `config/`: Application configuration files.
+    - `constants/`: Application-wide constants.
+    - `utils/`: Utility functions and helpers.
   - `features/`: Feature-specific modules and components.
 - `tests/`: Unit and integration tests.
 - `prisma/`: Prisma schema and migration files.
