@@ -49,6 +49,8 @@
       "~/core/config": ["./src/core/config/*"],
       "~/core/constants": ["./src/core/constants/*"],
       "~/core/utils": ["./src/core/utils/*"],
+      // Feature-specific Aliases
+      "~/features/users": ["./src/features/users/*"],
       "@/generated/prisma": ["./generated/prisma/client.ts"]
     }
   }

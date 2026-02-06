@@ -55,3 +55,37 @@ A boilerplate project for building backend applications using TypeScript, Node.j
    npm run dev
    ```
 8. Open your browser and navigate to `http://localhost:8080/api/v1` to see the application running.
+
+### Usage
+
+#### Path Aliases
+
+The project uses path aliases for better module resolution. Check the [tsconfig.json](./tsconfig.json) file for the configured aliases. Here are some examples:
+
+```json
+// Path Aliases
+"baseUrl": ".",
+"paths": {
+   // Existing Aliases
+   "~/*": ["./src/*"],
+   "~/core/config": ["./src/core/config/*"],
+   "~/core/constants": ["./src/core/constants/*"],
+   "~/core/utils": ["./src/core/utils/*"],
+   // Feature-specific Aliases
+   "~/features/users": ["./src/features/users/*"],
+   "@/generated/prisma": ["./generated/prisma/client.ts"]
+}
+```
+
+## Project Structure
+
+- `src/`: Contains the source code of the application.
+  - `core/`: Core utilities, configurations, and constants.
+  - `config/`: Application configuration files.
+  - `constants/`: Application-wide constants.
+  - `utils/`: Utility functions and helpers.
+  - `features/`: Feature-specific modules and components.
+- `tests/`: Unit and integration tests.
+- `prisma/`: Prisma schema and migration files.
+- `Dockerfile`: Docker configuration for containerizing the application.
+- `docker-compose.yml`: Docker Compose configuration for multi-container setups.
