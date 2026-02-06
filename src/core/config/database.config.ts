@@ -1,4 +1,4 @@
-import { PrismaClient } from "@/generated/prisma";
+import { PrismaClient } from "generated/prisma/client";
 import { getEnv } from "./env.validation";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { type ClientConfig } from "pg";

@@ -50,8 +50,8 @@
       "~/core/constants": ["./src/core/constants/*"],
       "~/core/utils": ["./src/core/utils/*"],
       // Feature-specific Aliases
-      "~/features/users": ["./src/features/users/*"],
-      "@/generated/prisma": ["./generated/prisma/client.ts"]
+      "~/features/users": ["./src/features/users/*"]
     }
-  }
+  },
+  "exclude": ["node_modules"]
 }
