@@ -12,7 +12,8 @@ A boilerplate project for building backend applications using TypeScript, Node.j
 - Pre-configured linting and formatting with ESLint and Prettier.
 - Sample routes and controllers to get you started quickly.
 - Docker support for containerized development and deployment.
-- Unit testing setup with Jest.
+- Unit testing setup with Jest or Vitest.
+- Feature-based modular structure with dedicated folders for controllers, services, repositories, schemas, types, and tests.
 
 ## Getting Started
 
@@ -66,13 +67,13 @@ The project uses path aliases for better module resolution. Check the [tsconfig.
 // Path Aliases
 "baseUrl": ".",
 "paths": {
-   // Existing Aliases
    "~/*": ["./src/*"],
    "~/core/config": ["./src/core/config/*"],
    "~/core/constants": ["./src/core/constants/*"],
    "~/core/utils": ["./src/core/utils/*"],
    // Feature-specific Aliases
    "~/features/users": ["./src/features/users/*"],
+   "~/features/auth": ["./src/features/auth/*"]
 }
 ```
 
@@ -84,7 +85,57 @@ The project uses path aliases for better module resolution. Check the [tsconfig.
     - `constants/`: Application-wide constants.
     - `utils/`: Utility functions and helpers.
   - `features/`: Feature-specific modules and components.
-- `tests/`: Unit and integration tests.
+    - Each feature (e.g. `auth`, `users`) has its own folder:
+      ```
+      src/features/<feature>/
+        controllers/
+        services/
+        repositories/
+        routes/
+        schemas/
+        dtos/
+        types/
+        __tests__/
+        index.ts
+      ```
+      Example for `auth` feature:
+      ```
+      src/features/auth/
+        controllers/auth.controller.ts
+        services/auth.service.ts
+        repositories/auth.repository.ts
+        routes/auth.routes.ts
+        schemas/auth.schema.ts
+        dtos/auth.dto.ts
+        types/auth.types.ts
+        __tests__/auth.service.test.ts
+        index.ts
+      ```
+- `tests/`: Unit and integration tests (feature tests are colocated in their respective folders).
 - `prisma/`: Prisma schema and migration files.
 - `Dockerfile`: Docker configuration for containerizing the application.
 - `docker-compose.yml`: Docker Compose configuration for multi-container setups.
+
+## Testing
+
+- Unit tests for each feature are placed in the `__tests__` folder inside the respective feature directory.
+- Example:
+  ```
+  src/features/auth/__tests__/auth.service.test.ts
+  ```
+- Run tests with:
+  ```bash
+  npm test
+  ```
+  or
+  ```bash
+  npx jest
+  ```
+  or
+  ```bash
+  npx vitest
+  ```
+
+## Contribution
+
+Feel free to open issues or pull requests for improvements and new features.
