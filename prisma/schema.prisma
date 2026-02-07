@@ -15,8 +15,13 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
+  id        String  @id @default(cuid())
+  email     String  @unique
   name      String?
-  createdAt DateTime @default(now())
+  password  String
+  createdAt BigInt  @default(dbgenerated("extract(epoch from now())")) @map("created_at")
+  updatedAt BigInt? @default(dbgenerated("null ON UPDATE extract(epoch from now())")) @map("updated_at")
+  deletedAt BigInt? @map("deleted_at")
+
+  @@map("user")
 }
