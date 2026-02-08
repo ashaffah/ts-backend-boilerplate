@@ -12,13 +12,11 @@ export async function getUserById(id: string) {
 }
 
 export async function getUsers(params: QueryParams) {
-  const { page = "1", per_page = "10", search = "", sort = "asc", order = "created_at" } = params;
+  const { page = "1", per_page = "10", search = "", sort = "createdAt", order = "asc" } = params;
 
   const take = parseInt(per_page ?? 20); // per_page
   const skip = (parseInt(page ?? 1) - 1) * take; // offset
-  const _sort = (sort ?? "id").toString(); // column
-  const _order = order ?? "desc";
-  const orderBy = { [_sort]: _order };
+  const orderBy = { [sort]: order };
 
   const users = await app.state.prisma.user.findMany({
     where: {
