@@ -1,6 +1,7 @@
 import { app } from "~/core/config/";
 import type { QueryParams } from "~/core/types/";
 import { UserDto } from "../dtos/user.dto";
+import { HttpError } from "~/core/utils/";
 
 export async function getUserById(id: string) {
   return app.state.prisma.user.findUnique({
@@ -72,12 +73,17 @@ export async function updateUser(id: string, data: Partial<UserDto>) {
 }
 
 export async function softDeleteUser(id: string) {
+  const isUserExist = await app.state.prisma.user.findUnique({
+    where: { id, deletedAt: null },
+  });
+
+  if (!isUserExist) {
+    throw new HttpError("User not found", 404);
+  }
+
   return app.state.prisma.user.update({
     where: {
       id,
-      deletedAt: {
-        not: null,
-      },
     },
     data: { deletedAt: BigInt(Math.floor(Date.now() / 1000)) },
     omit: {
