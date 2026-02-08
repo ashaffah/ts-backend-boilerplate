@@ -49,6 +49,8 @@
       "~/core/config": ["./src/core/config/*"],
       "~/core/constants": ["./src/core/constants/*"],
       "~/core/utils": ["./src/core/utils/*"],
+      "~/core/types": ["./src/core/types/*"],
+      "~/core/middlewares": ["./src/core/middlewares/*"],
       // Feature-specific Aliases
       "~/features/users": ["./src/features/users/*"]
     }
