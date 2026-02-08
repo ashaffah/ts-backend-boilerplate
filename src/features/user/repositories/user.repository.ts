@@ -4,12 +4,18 @@ import { UserDto } from "../dtos/user.dto";
 import { HttpError } from "~/core/utils/";
 
 export async function getUserById(id: string) {
-  return app.state.prisma.user.findUnique({
+  const data = await app.state.prisma.user.findUnique({
     where: { id, deletedAt: null },
     omit: {
       password: true,
     },
   });
+
+  if (!data) {
+    throw new HttpError("User not found", 404);
+  }
+
+  return data;
 }
 
 export async function getUsers(params: QueryParams) {
@@ -51,7 +57,7 @@ export async function getUsers(params: QueryParams) {
 }
 
 export async function createUser(data: UserDto) {
-  return app.state.prisma.user.create({
+  return await app.state.prisma.user.create({
     data,
     omit: {
       password: true,
@@ -60,7 +66,15 @@ export async function createUser(data: UserDto) {
 }
 
 export async function updateUser(id: string, data: Partial<UserDto>) {
-  return app.state.prisma.user.update({
+  const isUserExist = await app.state.prisma.user.findUnique({
+    where: { id, deletedAt: null },
+  });
+
+  if (!isUserExist) {
+    throw new HttpError("User not found", 404);
+  }
+
+  return await app.state.prisma.user.update({
     where: {
       id,
       deletedAt: null,
@@ -81,7 +95,7 @@ export async function softDeleteUser(id: string) {
     throw new HttpError("User not found", 404);
   }
 
-  return app.state.prisma.user.update({
+  return await app.state.prisma.user.update({
     where: {
       id,
     },
@@ -93,7 +107,15 @@ export async function softDeleteUser(id: string) {
 }
 
 export async function deleteUser(id: string) {
-  return app.state.prisma.user.delete({
+  const isUserExist = await app.state.prisma.user.findUnique({
+    where: { id },
+  });
+
+  if (!isUserExist) {
+    throw new HttpError("User not found", 404);
+  }
+
+  return await app.state.prisma.user.delete({
     where: { id },
     omit: {
       password: true,
