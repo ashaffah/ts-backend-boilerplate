@@ -4,6 +4,7 @@ import { PrismaPg } from "@prisma/adapter-pg";
 import { type ClientConfig } from "pg";
 import cassandra, { ClientOptions, DseClientOptions } from "cassandra-driver";
 import { logger, LogMessages } from "./logger.config";
+import { NOW_EPOCH } from "~/core/constant/";
 
 const env = getEnv();
 
@@ -32,13 +33,12 @@ export const prisma = new PrismaClient({
         // logger.debug(`Prisma Query - Original Query: ${query.toString()}`);
         // Automatically set updatedAt on update operations
         if (operation.includes("update")) {
-          const nowEpoch = BigInt(Math.floor(Date.now() / 1000));
           // logger.debug(`Setting updatedAt to ${nowEpoch} for ${operation} operation`);
           if (args && "data" in args && typeof args.data === "object" && args.data !== null) {
             // logger.debug(`Original data: ${JSON.stringify(args.data)}`);
             args.data = {
               ...args.data,
-              updatedAt: nowEpoch,
+              updatedAt: NOW_EPOCH,
             };
           }
         }
