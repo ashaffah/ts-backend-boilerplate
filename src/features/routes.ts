@@ -1,5 +1,6 @@
 import { FastifyInstance } from "fastify";
 import { authRoutes } from "./auth";
+import { userRoutes } from "./user";
 
 export function registerFeatureRoutes(app: FastifyInstance) {
   /**
@@ -7,4 +8,5 @@ export function registerFeatureRoutes(app: FastifyInstance) {
    * Register feature routes here
    */
   authRoutes(app);
+  userRoutes(app);
 }
