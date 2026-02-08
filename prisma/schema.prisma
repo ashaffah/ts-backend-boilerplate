@@ -20,7 +20,7 @@ model User {
   name      String?
   password  String
   createdAt BigInt  @default(dbgenerated("extract(epoch from now())")) @map("created_at")
-  updatedAt BigInt? @default(dbgenerated("null ON UPDATE extract(epoch from now())")) @map("updated_at")
+  updatedAt BigInt? @map("updated_at")
   deletedAt BigInt? @map("deleted_at")
 
   @@map("user")

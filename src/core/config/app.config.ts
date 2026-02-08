@@ -6,6 +6,7 @@ import fastifyCookie from "@fastify/cookie";
 import { fastifyJwt } from "@fastify/jwt";
 import { loggerConfig } from "./logger.config";
 import { getEnv } from "./env.validation";
+import { registerFeatureRoutes } from "~/features/routes";
 
 const app: FastifyInstance = fastify({
   logger: loggerConfig,
@@ -57,12 +58,8 @@ app.register(
     //   if (guestRoutes.includes(req.originalUrl)) return;
     //   await verifyToken(req, res);
     // });
-    /**
-     * ROUTES
-     * Register feature routes di sini
-     */
-    // api.register(authRoutes, { prefix: "/auth" });
-    // api.register(userRoutes, { prefix: "/users" });
+    /** ROUTES */
+    registerFeatureRoutes(api);
     done();
   },
   { prefix: "/api/v1" },
