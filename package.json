@@ -26,6 +26,7 @@
   "license": "Apache-2.0",
   "author": "Ashaffah",
   "main": "./dist/src/main.js",
+  "module": "nodenext",
   "scripts": {
     "dev": "nodemon --exec tsx ./src/main.ts",
     "build:windows": "npx tsc -p tsconfig.json && powershell -File ./build-windows.ps1",
@@ -40,7 +41,9 @@
     "migrate:deploy": "npx prisma migrate deploy",
     "migrate:reset": "npx prisma migrate reset",
     "format": "npx prisma format",
-    "test": "jest"
+    "test": "vitest",
+    "test:run": "vitest run",
+    "test:watch": "vitest --watch"
   },
   "dependencies": {
     "@fastify/cookie": "^11.0.2",
@@ -65,16 +68,18 @@
     "ts-node": "^10.9.2"
   },
   "devDependencies": {
+    "@babel/core": "^7.29.0",
+    "@babel/preset-env": "^7.29.0",
     "@eslint/js": "^9",
-    "@types/jest": "^30.0.0",
     "@types/node": "^25.2.1",
     "@types/pg": "^8.16.0",
     "eslint": "^9",
-    "jest": "^30.2.0",
     "nodemon": "^3.1.11",
     "prisma": "^7.3.0",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.54.0"
+    "typescript-eslint": "^8.54.0",
+    "vite-tsconfig-paths": "^6.1.0",
+    "vitest": "^4.0.18"
   }
 }
