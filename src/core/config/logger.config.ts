@@ -98,18 +98,18 @@ export const LogMessages = {
 } as const;
 
 /**
- * Logger helper untuk penggunaan di luar request context
- * Gunakan app.log di dalam request handler
+ * Logger helper for usage outside request context.
+ * Use app.log inside request handlers.
  *
  * @example
- * // Di service atau utility file
+ * // In service or utility files
  * import { logger } from "~/core/config/";
  *
  * logger.info("Application starting...");
  * logger.error({ err }, "Something went wrong");
  * logger.debug({ data }, "Debug info");
  *
- * // Child logger dengan context
+ * // Child logger with context
  * const dbLogger = logger.child({ service: "database" });
  * dbLogger.info("Connected to database");
  */
