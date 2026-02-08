@@ -22,10 +22,12 @@ export const prisma = new PrismaClient({
   ],
   errorFormat: "minimal",
 }).$extends({
+  name: "prisma-extension-auto-updatedAt",
   query: {
     $allModels: {
       /**
        * Middleware to automatically set updatedAt field on update operations
+       * ref: https://www.prisma.io/docs/orm/prisma-client/client-extensions/query#modify-all-operations-in-all-models-of-your-schema
        */
       $allOperations: async ({ operation, args, query }) => {
         // logger.debug(`Prisma Query - Model Operation: ${operation}`);
