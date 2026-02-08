@@ -1,5 +1,5 @@
 import { signIn, signUp } from "../repositories/auth.repository";
-import { hashPassword, verifyPassword } from "~/core/utils/";
+import { hashPassword, verifyPassword } from "~/core/utils";
 import { AuthDto } from "../dtos/auth.dto";
 
 export async function loginService({ email, password }: AuthDto) {
