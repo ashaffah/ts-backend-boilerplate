@@ -20,6 +20,33 @@ export const prisma = new PrismaClient({
     { emit: "stdout" /**"stdout" || "event" */, level: "warn" },
   ],
   errorFormat: "minimal",
+}).$extends({
+  query: {
+    $allModels: {
+      /**
+       * Middleware to automatically set updatedAt field on update operations
+       */
+      $allOperations: async ({ operation, args, query }) => {
+        // logger.debug(`Prisma Query - Model Operation: ${operation}`);
+        // logger.debug(`Prisma Query - Args: ${JSON.stringify(args)}`);
+        // logger.debug(`Prisma Query - Original Query: ${query.toString()}`);
+        // Automatically set updatedAt on update operations
+        if (operation.includes("update")) {
+          const nowEpoch = BigInt(Math.floor(Date.now() / 1000));
+          // logger.debug(`Setting updatedAt to ${nowEpoch} for ${operation} operation`);
+          if (args && "data" in args && typeof args.data === "object" && args.data !== null) {
+            // logger.debug(`Original data: ${JSON.stringify(args.data)}`);
+            args.data = {
+              ...args.data,
+              updatedAt: nowEpoch,
+            };
+          }
+        }
+        // Proceed with the original query
+        return query(args);
+      },
+    },
+  },
 });
 
 // Replace 'Username' and 'Password' with the username and password from your cluster settings
