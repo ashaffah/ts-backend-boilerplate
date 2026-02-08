@@ -4,7 +4,7 @@ import { PrismaPg } from "@prisma/adapter-pg";
 import { type ClientConfig } from "pg";
 import cassandra, { ClientOptions, DseClientOptions } from "cassandra-driver";
 import { logger, LogMessages } from "./logger.config";
-import { NOW_EPOCH } from "~/core/constant/";
+import { NOW_EPOCH } from "~/core/constant";
 
 const env = getEnv();
 

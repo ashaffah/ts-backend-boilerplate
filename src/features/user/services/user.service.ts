@@ -7,7 +7,7 @@ import {
   updateUser,
 } from "../repositories/user.repository";
 import { UserDto } from "../dtos/user.dto";
-import type { QueryParams } from "~/core/types/";
+import type { QueryParams } from "~/core/types";
 
 export async function getUserByIdService(id: string) {
   return await getUserById(id);

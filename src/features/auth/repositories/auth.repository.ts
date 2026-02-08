@@ -1,4 +1,4 @@
-import { app } from "~/core/config/";
+import { app } from "~/core/config";
 import { AuthDto } from "../dtos/auth.dto";
 
 export async function signIn(email: string) {

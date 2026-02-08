@@ -103,7 +103,7 @@ export const LogMessages = {
  *
  * @example
  * // In service or utility files
- * import { logger } from "~/core/config/";
+ * import { logger } from "~/core/config";
  *
  * logger.info("Application starting...");
  * logger.error({ err }, "Something went wrong");

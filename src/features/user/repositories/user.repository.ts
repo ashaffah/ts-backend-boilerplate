@@ -1,7 +1,8 @@
-import { app } from "~/core/config/";
-import type { QueryParams } from "~/core/types/";
+import { app } from "~/core/config";
+import type { QueryParams } from "~/core/types";
 import { UserDto } from "../dtos/user.dto";
-import { HttpError } from "~/core/utils/";
+import { HttpError } from "~/core/utils";
+import { NOW_EPOCH } from "~/core/constant";
 
 export async function getUserById(id: string) {
   const data = await app.state.prisma.user.findUnique({
@@ -99,7 +100,7 @@ export async function softDeleteUser(id: string) {
     where: {
       id,
     },
-    data: { deletedAt: BigInt(Math.floor(Date.now() / 1000)) },
+    data: { deletedAt: NOW_EPOCH },
     omit: {
       password: true,
     },

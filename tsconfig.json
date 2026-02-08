@@ -46,14 +46,14 @@
     "baseUrl": ".",
     "paths": {
       "~/*": ["./src/*"],
-      "~/core/config": ["./src/core/config/*"],
-      "~/core/constants": ["./src/core/constants/*"],
-      "~/core/utils": ["./src/core/utils/*"],
-      "~/core/types": ["./src/core/types/*"],
-      "~/core/middlewares": ["./src/core/middlewares/*"],
-      "~/core/constant": ["./src/core/constant/*"],
+      "~/core/config/*": ["./src/core/config/*"],
+      "~/core/constants/*": ["./src/core/constants/*"],
+      "~/core/utils/*": ["./src/core/utils/*"],
+      "~/core/types/*": ["./src/core/types/*"],
+      "~/core/middlewares/*": ["./src/core/middlewares/*"],
+      "~/core/constant/*": ["./src/core/constant/*"],
       // Feature-specific Aliases
-      "~/features/users": ["./src/features/users/*"]
+      "~/features/user/*": ["./src/features/user/*"]
     }
   },
   "exclude": ["node_modules", "generated", "dist"]

@@ -9,7 +9,7 @@ import {
   valkey,
   verifySearchConnection,
   checkMinioConnection,
-} from "~/core/config/";
+} from "~/core/config";
 
 // Graceful shutdown
 const shutdown = async (signal: string) => {

@@ -9,7 +9,7 @@ import {
   updateUserService,
 } from "../services/user.service";
 import { UserDto } from "../dtos/user.dto";
-import type { QueryParams } from "~/core/types/";
+import type { QueryParams } from "~/core/types";
 
 /**
  * EXAMPLES USAGE OF ARKTYPE WITH FASTIFY CONTROLLERS
