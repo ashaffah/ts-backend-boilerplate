@@ -5,6 +5,12 @@ import { type ClientConfig } from "pg";
 import cassandra, { ClientOptions, DseClientOptions } from "cassandra-driver";
 import { logger, LogMessages } from "./logger.config";
 import { NOW_EPOCH } from "~/core/constant";
+import {
+  DynamicQueryExtensionArgs,
+  InternalArgs,
+  DefaultArgs,
+} from "@prisma/client/runtime/client";
+import { GlobalOmitConfig, TypeMap } from "generated/prisma/internal/prismaNamespace";
 
 const env = getEnv();
 
@@ -48,7 +54,12 @@ export const prisma = new PrismaClient({
         return query(args);
       },
     },
-  },
+  } as DynamicQueryExtensionArgs<
+    {
+      $allModels: unknown;
+    },
+    TypeMap<InternalArgs & DefaultArgs, GlobalOmitConfig | undefined>
+  >,
 });
 
 // Replace 'Username' and 'Password' with the username and password from your cluster settings
