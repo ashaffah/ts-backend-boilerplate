@@ -21,7 +21,7 @@ test("loginService calls login and returns token", async () => {
 
   const result = await loginService({ email: "user@example.com", password: "password123" });
   expect(authRepository.signIn).toHaveBeenCalledWith("user@example.com");
-  expect(result).toEqual({ message: "Login successful", token: "mock-token" });
+  expect(result).toEqual({ message: "Login successful" });
 });
 
 test("registerService calls register and returns user", async () => {

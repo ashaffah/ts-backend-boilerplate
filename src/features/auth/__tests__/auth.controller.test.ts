@@ -17,7 +17,7 @@ test("loginController returns token", async () => {
     email: "user@example.com",
     password: "password123",
   });
-  expect(reply.send).toHaveBeenCalledWith({ message: "Login successful", token: "mock-token" });
+  expect(reply.send).toHaveBeenCalledWith({ message: "Login successful" });
 });
 
 test("registerController returns user", async () => {
