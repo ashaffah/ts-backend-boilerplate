@@ -30,7 +30,7 @@
   "scripts": {
     "dev": "nodemon --exec tsx ./src/main.ts",
     "build:windows": "npx tsc -p tsconfig.json && powershell -File ./build-windows.ps1",
-    "build:unix": "npx tsc -p tsconfig.json && rsync -av --exclude='migrations/' --exclude='*.ts' --exclude='*.prisma' --exclude='schemas/' prisma/ dist/prisma/ && rsync -av --exclude='*.ts' generated/ dist/generated/",
+    "build:unix": "npx tsc -p tsconfig.json && rsync -av --exclude='migrations/' --exclude='*.ts' --exclude='*.prisma' --exclude='models/' prisma/ dist/prisma/ && rsync -av --exclude='*.ts' generated/ dist/generated/",
     "build:os": "node detect-os.ts && npm run build:windows || npm run build:unix",
     "build": "npm run build:os",
     "start": "node --import=tsx ./dist/src/main.js",
