@@ -23,6 +23,11 @@ const EnvSchema = type({
   VALKEY_USERNAME: "string",
   VALKEY_PASSWORD: "string",
 
+  // Redis
+  REDIS_HOST: "string",
+  REDIS_PORT: "string.numeric.parse",
+  REDIS_PASSWORD: "string",
+
   // Elasticsearch
   ELASTICSEARCH_NODE: "string",
   ELASTICSEARCH_USERNAME: "string",

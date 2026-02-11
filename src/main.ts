@@ -6,7 +6,8 @@ import {
   checkDatabaseConnections,
   checkValkeyConnection,
   stateConfig,
-  valkey,
+  createValkeyClient,
+  createRedisClient,
   verifySearchConnection,
   checkMinioConnection,
 } from "~/core/config";
@@ -38,8 +39,9 @@ const main = async () => {
   await checkMinioConnection();
 
   // Initialize app state
-  const cacheClient = await valkey();
-  app.state = { ...stateConfig, cache: cacheClient };
+  const valkeyClient = await createValkeyClient();
+  const redisClient = await createRedisClient();
+  app.state = { ...stateConfig, cache_redis: redisClient, cache_valkey: valkeyClient };
 
   await app.listen({ port: env.SERVER_PORT, host: env.SERVER_HOST });
   app.log.info(LogMessages.SERVER_START(env.SERVER_HOST, env.SERVER_PORT));

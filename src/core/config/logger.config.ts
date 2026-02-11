@@ -81,6 +81,10 @@ export const LogMessages = {
   VALKEY_CONNECTION_SUCCESS: "Valkey cache connected successfully",
   VALKEY_CONNECTION_FAILURE: "Valkey cache connection failed",
 
+  // Redis
+  REDIS_CONNECTION_SUCCESS: "Redis cache connected successfully",
+  REDIS_CONNECTION_FAILURE: "Redis cache connection failed",
+
   // Request lifecycle
   REQUEST_RECEIVED: (method: string, url: string) => `${method} ${url} received`,
   REQUEST_COMPLETED: (method: string, url: string, statusCode: number, time: number) =>
