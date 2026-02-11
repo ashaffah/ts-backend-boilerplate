@@ -12,7 +12,7 @@ export const minioClient = new Client({
   secretKey: env.MINIO_SECRET_KEY,
 } as ClientOptions);
 
-export const checkMinioConnection = async (): Promise<boolean> => {
+export async function checkMinioConnection(): Promise<boolean> {
   try {
     await minioClient.listBuckets();
     logger.info(LogMessages.MINIO_CONNECTION_SUCCESS);
@@ -21,4 +21,4 @@ export const checkMinioConnection = async (): Promise<boolean> => {
     logger.error({ error }, LogMessages.MINIO_CONNECTION_FAILURE);
     return false;
   }
-};
+}

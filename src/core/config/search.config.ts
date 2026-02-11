@@ -14,7 +14,7 @@ export const searchClient = new Client({
   },
 });
 
-export const verifySearchConnection = async (): Promise<boolean> => {
+export async function verifySearchConnection(): Promise<boolean> {
   try {
     await searchClient.ping();
     logger.info(LogMessages.ELASTICSEARCH_CONNECTION_SUCCESS);
@@ -23,4 +23,4 @@ export const verifySearchConnection = async (): Promise<boolean> => {
     logger.error({ err }, LogMessages.ELASTICSEARCH_CONNECTION_FAILURE);
     return false;
   }
-};
+}

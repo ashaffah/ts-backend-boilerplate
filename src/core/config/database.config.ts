@@ -77,10 +77,10 @@ export const scylla = new cassandra.Client({
   // authProvider: authProvider,
 } as ClientOptions | DseClientOptions);
 
-export const checkDatabaseConnections = async (): Promise<{
+export async function checkDatabaseConnections(): Promise<{
   postgres: boolean;
   scylla: boolean;
-}> => {
+}> {
   const result = { postgres: false, scylla: false };
 
   // Check PostgreSQL
@@ -102,4 +102,4 @@ export const checkDatabaseConnections = async (): Promise<{
   }
 
   return result;
-};
+}
