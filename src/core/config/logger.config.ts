@@ -85,6 +85,9 @@ export const LogMessages = {
   REDIS_CONNECTION_SUCCESS: "Redis cache connected successfully",
   REDIS_CONNECTION_FAILURE: "Redis cache connection failed",
 
+  // Prisma
+  PRISMA_QUERY_ERROR: "Prisma query error",
+
   // Request lifecycle
   REQUEST_RECEIVED: (method: string, url: string) => `${method} ${url} received`,
   REQUEST_COMPLETED: (method: string, url: string, statusCode: number, time: number) =>
