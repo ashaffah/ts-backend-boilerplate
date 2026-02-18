@@ -1,22 +1,64 @@
-import { PrismaClient } from "generated/prisma/client";
+import { Prisma, PrismaClient } from "generated/prisma/client";
 import { getEnv } from "./env.validation";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { type ClientConfig } from "pg";
 import cassandra, { ClientOptions, DseClientOptions } from "cassandra-driver";
 import { logger, LogMessages } from "./logger.config";
 import { NOW_EPOCH } from "~/core/constant";
-import {
-  DynamicQueryExtensionArgs,
-  InternalArgs,
-  DefaultArgs,
-} from "@prisma/client/runtime/client";
-import { GlobalOmitConfig, TypeMap } from "generated/prisma/internal/prismaNamespace";
 
 const env = getEnv();
 
 const connectionString = env.DATABASE_URL;
 
 const adapter = new PrismaPg({ connectionString } as ClientConfig);
+
+// Define the type for the parameters passed to the $allOperations middleware
+type PrismaAllOperationsParams = {
+  model?: Prisma.ModelName;
+  operation: Prisma.PrismaAction;
+  args: Record<string, unknown>;
+  query: (_args: Record<string, unknown>) => Promise<never>;
+};
+
+/** Define a Prisma Client extension to automatically set the updatedAt field on update operations
+ * FIX error TS2322
+ * ref: https://github.com/prisma/prisma/issues/19888
+ */
+const timestampExtension = Prisma.defineExtension({
+  name: "prisma-extension-auto-updatedAt",
+  query: {
+    $allModels: {
+      /**
+       * Middleware to automatically set updatedAt field on update operations
+       * ref: https://www.prisma.io/docs/orm/prisma-client/client-extensions/query#modify-all-operations-in-all-models-of-your-schema
+       */
+      $allOperations(params) {
+        const { operation, args, query } = params as PrismaAllOperationsParams;
+        // logger.debug(`Prisma Query - Model Operation: ${operation}`);
+        // logger.debug(`Prisma Query - Args: ${JSON.stringify(args)}`);
+        // logger.debug(`Prisma Query - Original Query: ${query.toString()}`);
+        // Automatically set updatedAt on update operations
+        try {
+          if (typeof operation === "string" && operation.includes("update")) {
+            // logger.debug(`Setting updatedAt to ${nowEpoch} for ${operation} operation`);
+            if (args && "data" in args && typeof args.data === "object" && args.data !== null) {
+              // logger.debug(`Original data: ${JSON.stringify(args.data)}`);
+              args.data = {
+                ...args.data,
+                updatedAt: NOW_EPOCH,
+              };
+            }
+          }
+          // Proceed with the original query
+          return query(args);
+        } catch (error) {
+          logger.error({ error }, LogMessages.PRISMA_QUERY_ERROR);
+          throw error;
+        }
+      },
+    },
+  },
+});
 
 export const prisma = new PrismaClient({
   adapter,
@@ -27,40 +69,7 @@ export const prisma = new PrismaClient({
     { emit: "stdout" /**"stdout" || "event" */, level: "warn" },
   ],
   errorFormat: "minimal",
-}).$extends({
-  name: "prisma-extension-auto-updatedAt",
-  query: {
-    $allModels: {
-      /**
-       * Middleware to automatically set updatedAt field on update operations
-       * ref: https://www.prisma.io/docs/orm/prisma-client/client-extensions/query#modify-all-operations-in-all-models-of-your-schema
-       */
-      $allOperations: async ({ operation, args, query }) => {
-        // logger.debug(`Prisma Query - Model Operation: ${operation}`);
-        // logger.debug(`Prisma Query - Args: ${JSON.stringify(args)}`);
-        // logger.debug(`Prisma Query - Original Query: ${query.toString()}`);
-        // Automatically set updatedAt on update operations
-        if (operation.includes("update")) {
-          // logger.debug(`Setting updatedAt to ${nowEpoch} for ${operation} operation`);
-          if (args && "data" in args && typeof args.data === "object" && args.data !== null) {
-            // logger.debug(`Original data: ${JSON.stringify(args.data)}`);
-            args.data = {
-              ...args.data,
-              updatedAt: NOW_EPOCH,
-            };
-          }
-        }
-        // Proceed with the original query
-        return query(args);
-      },
-    },
-  } as DynamicQueryExtensionArgs<
-    {
-      $allModels: unknown;
-    },
-    TypeMap<InternalArgs & DefaultArgs, GlobalOmitConfig | undefined>
-  >,
-});
+}).$extends(timestampExtension);
 
 // Replace 'Username' and 'Password' with the username and password from your cluster settings
 // let authProvider = new cassandra.auth.PlainTextAuthProvider('Username', 'Password');
