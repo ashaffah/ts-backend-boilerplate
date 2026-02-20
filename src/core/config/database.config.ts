@@ -72,7 +72,10 @@ export const prisma = new PrismaClient({
 }).$extends(timestampExtension);
 
 // Replace 'Username' and 'Password' with the username and password from your cluster settings
-// let authProvider = new cassandra.auth.PlainTextAuthProvider('Username', 'Password');
+const authProvider = new cassandra.auth.PlainTextAuthProvider(
+  env.SCYLLA_USERNAME,
+  env.SCYLLA_PASSWORD,
+);
 // Replace the PublicIPs with the IP addresses of your clusters
 const contactPoints = JSON.parse(env.SCYLLA_CONTACT_POINTS);
 // Replace DataCenter with the name of your data center, for example: 'AWS_VPC_US_EAST_1'
@@ -83,7 +86,7 @@ export const scylla = new cassandra.Client({
   contactPoints: contactPoints,
   localDataCenter: localDataCenter,
   keyspace: keyspace,
-  // authProvider: authProvider,
+  authProvider: authProvider,
 } as ClientOptions | DseClientOptions);
 
 export async function checkDatabaseConnections(): Promise<{

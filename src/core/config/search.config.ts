@@ -12,6 +12,10 @@ export const searchClient = new Client({
     apiKey: env.ELASTICSEARCH_API_KEY,
     bearer: env.ELASTICSEARCH_BEARER_TOKEN,
   },
+  requestTimeout: 30000,
+  maxRetries: 3,
+  sniffOnStart: false,
+  sniffOnConnectionFault: false,
 });
 
 export async function verifySearchConnection(): Promise<boolean> {

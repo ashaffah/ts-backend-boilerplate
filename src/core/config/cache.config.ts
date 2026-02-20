@@ -44,6 +44,7 @@ export async function checkValkeyConnection(): Promise<boolean> {
 
 const redisOptions: RedisClientOptions = {
   url: `redis://${env.REDIS_HOST}:${env.REDIS_PORT}`,
+  username: env.REDIS_USERNAME,
   password: env.REDIS_PASSWORD,
 };
 

@@ -14,8 +14,8 @@ const EnvSchema = type({
   SCYLLA_CONTACT_POINTS: "string",
   SCYLLA_DATACENTER: "string",
   SCYLLA_KEYSPACE: "string",
-  "SCYLLA_USERNAME?": "string",
-  "SCYLLA_PASSWORD?": "string",
+  SCYLLA_USERNAME: "string",
+  SCYLLA_PASSWORD: "string",
 
   // Cache / Valkey
   VALKEY_HOST: "string",
@@ -26,6 +26,7 @@ const EnvSchema = type({
   // Redis
   REDIS_HOST: "string",
   REDIS_PORT: "string.numeric.parse",
+  REDIS_USERNAME: "string",
   REDIS_PASSWORD: "string",
 
   // Elasticsearch
