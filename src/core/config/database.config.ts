@@ -71,8 +71,6 @@ export const prisma = new PrismaClient({
   errorFormat: "minimal",
 }).$extends(timestampExtension);
 
-export type ExtendedPrismaClient = typeof prisma;
-
 // Replace 'Username' and 'Password' with the username and password from your cluster settings
 // let authProvider = new cassandra.auth.PlainTextAuthProvider('Username', 'Password');
 // Replace the PublicIPs with the IP addresses of your clusters

@@ -1,4 +1,4 @@
-import { ExtendedPrismaClient, prisma, scylla } from "./database.config";
+import { prisma, scylla } from "./database.config";
 import { GlideClient } from "@valkey/valkey-glide";
 import { searchClient } from "./search.config";
 import { minioClient } from "./storage.config";
@@ -12,7 +12,7 @@ type CacheTypes = {
 type OmittedCacheState = Omit<AppState, keyof CacheTypes>;
 
 interface AppState {
-  prisma: ExtendedPrismaClient;
+  prisma: typeof prisma;
   scylla: typeof scylla;
   cache_redis: CacheTypes["cache_redis"];
   cache_valkey: CacheTypes["cache_valkey"];
