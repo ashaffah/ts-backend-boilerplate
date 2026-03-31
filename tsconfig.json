@@ -56,5 +56,6 @@
       "~/features/user/*": ["./src/features/user/*"]
     }
   },
+  "include": ["src/**/*"],
   "exclude": ["node_modules", "generated", "dist"]
 }
