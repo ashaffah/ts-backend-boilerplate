@@ -1,4 +1,4 @@
-import { prisma, scylla } from "./database.config";
+import { getPrisma, getScylla } from "./database.config";
 import { GlideClient } from "@valkey/valkey-glide";
 import { searchClient } from "./search.config";
 import { minioClient } from "./storage.config";
@@ -12,8 +12,8 @@ type CacheTypes = {
 type OmittedCacheState = Omit<AppState, keyof CacheTypes>;
 
 interface AppState {
-  prisma: typeof prisma;
-  scylla: typeof scylla;
+  prisma: ReturnType<typeof getPrisma>;
+  scylla: ReturnType<typeof getScylla>;
   cache_redis: CacheTypes["cache_redis"];
   cache_valkey: CacheTypes["cache_valkey"];
   search: typeof searchClient;
@@ -21,8 +21,8 @@ interface AppState {
 }
 
 export const stateConfig: OmittedCacheState = {
-  prisma,
-  scylla,
+  prisma: getPrisma(),
+  scylla: getScylla(),
   search: searchClient,
   minio: minioClient,
 };
