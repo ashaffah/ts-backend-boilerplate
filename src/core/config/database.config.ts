@@ -6,12 +6,6 @@ import cassandra, { ClientOptions, DseClientOptions } from "cassandra-driver";
 import { logger, LogMessages } from "./logger.config";
 import { NOW_EPOCH } from "~/core/constant";
 
-const env = getEnv();
-
-const connectionString = env.DATABASE_URL;
-
-const adapter = new PrismaPg({ connectionString } as ClientConfig);
-
 // Define the type for the parameters passed to the $allOperations middleware
 type PrismaAllOperationsParams = {
   model?: Prisma.ModelName;
@@ -60,44 +54,57 @@ const timestampExtension = Prisma.defineExtension({
   },
 });
 
-export const prisma = new PrismaClient({
-  adapter,
-  log: [
-    { emit: "event" /**"stdout" || "event" */, level: "query" },
-    { emit: "stdout" /**"stdout" || "event" */, level: "error" },
-    { emit: "stdout" /**"stdout" || "event" */, level: "info" },
-    { emit: "stdout" /**"stdout" || "event" */, level: "warn" },
-  ],
-  errorFormat: "minimal",
-}).$extends(timestampExtension);
+let _prisma: ReturnType<typeof createPrismaClient> | null = null;
+let _scylla: cassandra.Client | null = null;
 
-// Replace 'Username' and 'Password' with the username and password from your cluster settings
-const authProvider = new cassandra.auth.PlainTextAuthProvider(
-  env.SCYLLA_USERNAME,
-  env.SCYLLA_PASSWORD,
-);
-// Replace the PublicIPs with the IP addresses of your clusters
-const contactPoints = JSON.parse(env.SCYLLA_CONTACT_POINTS);
-// Replace DataCenter with the name of your data center, for example: 'AWS_VPC_US_EAST_1'
-const localDataCenter = env.SCYLLA_DATACENTER;
-const keyspace = env.SCYLLA_KEYSPACE;
+function createPrismaClient() {
+  const env = getEnv();
+  const connectionString = env.DATABASE_URL;
+  const adapter = new PrismaPg({ connectionString } as ClientConfig);
 
-export const scylla = new cassandra.Client({
-  contactPoints: contactPoints,
-  localDataCenter: localDataCenter,
-  keyspace: keyspace,
-  authProvider: authProvider,
-} as ClientOptions | DseClientOptions);
+  return new PrismaClient({
+    adapter,
+    log: [
+      { emit: "event" /**"stdout" || "event" */, level: "query" },
+      { emit: "stdout" /**"stdout" || "event" */, level: "error" },
+      { emit: "stdout" /**"stdout" || "event" */, level: "info" },
+      { emit: "stdout" /**"stdout" || "event" */, level: "warn" },
+    ],
+    errorFormat: "minimal",
+  }).$extends(timestampExtension);
+}
 
-export async function checkDatabaseConnections(): Promise<{
-  postgres: boolean;
-  scylla: boolean;
-}> {
+export function getPrisma() {
+  if (!_prisma) _prisma = createPrismaClient();
+  return _prisma;
+}
+
+export function getScylla() {
+  if (!_scylla) {
+    const env = getEnv();
+    // Replace 'Username' and 'Password' with the username and password from your cluster settings
+    const authProvider = new cassandra.auth.PlainTextAuthProvider(
+      env.SCYLLA_USERNAME,
+      env.SCYLLA_PASSWORD,
+    );
+    _scylla = new cassandra.Client({
+      // Replace the PublicIPs with the IP addresses of your clusters
+      contactPoints: JSON.parse(env.SCYLLA_CONTACT_POINTS),
+      // Replace DataCenter with the name of your data center, for example: 'AWS_VPC_US_EAST_1'
+      localDataCenter: env.SCYLLA_DATACENTER,
+      keyspace: env.SCYLLA_KEYSPACE,
+      authProvider,
+    } as ClientOptions | DseClientOptions);
+  }
+  return _scylla;
+}
+
+export async function checkDatabaseConnections() {
   const result = { postgres: false, scylla: false };
 
   // Check PostgreSQL
   try {
-    await prisma.$connect();
+    await getPrisma().$connect();
     logger.info(LogMessages.POSTGRES_CONNECTION_SUCCESS);
     result.postgres = true;
   } catch (err) {
@@ -106,7 +113,7 @@ export async function checkDatabaseConnections(): Promise<{
 
   // Check ScyllaDB
   try {
-    await scylla.connect();
+    await getScylla().connect();
     logger.info(LogMessages.SCYLLA_CONNECTION_SUCCESS);
     result.scylla = true;
   } catch (err) {
