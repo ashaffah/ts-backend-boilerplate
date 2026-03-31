@@ -1,3 +1,4 @@
+import "~/core/polyfills/bigint";
 import {
   app,
   LogMessages,
@@ -10,6 +11,7 @@ import {
   createRedisClient,
   verifySearchConnection,
   checkMinioConnection,
+  checkRedisConnection,
 } from "~/core/config";
 
 // Graceful shutdown
@@ -35,6 +37,7 @@ const main = async () => {
   // Check database connections
   await checkDatabaseConnections();
   await checkValkeyConnection();
+  await checkRedisConnection();
   await verifySearchConnection();
   await checkMinioConnection();
 
