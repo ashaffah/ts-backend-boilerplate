@@ -14,7 +14,7 @@ A boilerplate project for building backend applications using TypeScript, Node.j
 - Docker support for containerized development and deployment.
 - Unit testing setup with Jest or Vitest.
 - Feature-based modular structure with dedicated folders for controllers, services, repositories, schemas, types, and tests.
-- Integration with PostgreSQL, ScyllaDB, Valkey, Elasticsearch, and MinIO.
+- Integration with PostgreSQL, ScyllaDB, Valkey, Redis, Elasticsearch, and MinIO.
 
 ## Prisma & Timestamp Fields
 
@@ -39,6 +39,7 @@ For custom error responses, use a custom error class (e.g., [`HttpError`](src/co
 - Docker or other containerization tool (Recommended)
 - PostgreSQL database
 - ScyllaDB database
+- Redis
 - Valkey
 - Elasticsearch
 - MinIO
