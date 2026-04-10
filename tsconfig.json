@@ -43,7 +43,6 @@
     "moduleResolution": "nodenext",
 
     // Path Aliases
-    "baseUrl": ".",
     "paths": {
       "~/*": ["./src/*"],
       "~/core/config/*": ["./src/core/config/*"],
@@ -53,9 +52,10 @@
       "~/core/middlewares/*": ["./src/core/middlewares/*"],
       "~/core/constant/*": ["./src/core/constant/*"],
       // Feature-specific Aliases
-      "~/features/user/*": ["./src/features/user/*"]
+      "~/features/user/*": ["./src/features/user/*"],
+      "*": ["./*"]
     }
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules", "generated", "dist"]
+  "exclude": ["node_modules", "generated"]
 }
